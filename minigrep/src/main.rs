@@ -1,3 +1,9 @@
+use std::env;
+
+use minigrep;
+
 fn main() {
-    println!("Hello, world!");
+    let arguments: Vec<String> = env::args().collect();
+
+    minigrep::run(&arguments);
 }
