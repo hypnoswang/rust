@@ -1,9 +1,13 @@
 use std::env;
+use std::process;
 
 use minigrep;
 
 fn main() {
     let arguments: Vec<String> = env::args().collect();
 
-    minigrep::run(&arguments);
+    if let Err(e) = minigrep::run(&arguments) {
+        eprintln!("Failed: {:?}", e);
+        process::exit(1);
+    }
 }
