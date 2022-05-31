@@ -81,9 +81,17 @@ fn main() {
     let mscore = scores.entry(String::from("Maggie")).or_insert(90);
     *mscore += 10;
     println!("###-2 {:#?}", scores);
+
+    let v = vec!["one".to_string(), "two".to_string()];
+    get_ownership(v);
 }
 
 fn makeup(s: &mut String) -> &String {
     s.push_str(", World!");
     s
+}
+
+fn get_ownership(mut v: Vec<String>) {
+    v.push(String::from("I'm the end"));
+    println!("We got value {:#?}", v);
 }
