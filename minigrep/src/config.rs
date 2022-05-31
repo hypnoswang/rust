@@ -1,4 +1,4 @@
-use std::env;
+use std::env::{self, Args};
 
 #[derive(Debug, PartialEq)]
 pub struct Config {
@@ -27,6 +27,35 @@ impl Config {
         Ok(Config {
             query: args[1].clone(),
             filename: args[2].clone(),
+            case_sensitive,
+        })
+    }
+
+    // 这里使用mut是因为调用next()方法
+    pub fn new_with_closure(mut args: Args) -> Result<Config, &'static str> {
+        // 跳过第1个参数
+        args.next();
+
+        let query = match args.next() {
+            Some(v) => v,
+            None => return Err("No queury specified"),
+        };
+
+        let filename = match args.next() {
+            Some(v) => v,
+            None => return Err("No file name specified"),
+        };
+
+        let case = match args.next() {
+            Some(v) => v,
+            None => String::new(),
+        };
+
+        let case_sensitive = Self::get_case_sensitive(case.as_str())?;
+
+        Ok(Config {
+            query,
+            filename,
             case_sensitive,
         })
     }

@@ -25,6 +25,35 @@ fn do_search<'a>(q: &str, cnt: &'a str, case_sensitive: bool) -> Vec<&'a str> {
     out
 }
 
+fn do_search_iterly<'a>(q: &str, cnt: &'a str, case_sensitive: bool) -> Vec<&'a str> {
+    let lq = q.to_ascii_lowercase();
+
+    let out = cnt
+        .lines()
+        .filter(|line| {
+            if case_sensitive {
+                line.contains(q)
+            } else {
+                line.to_ascii_lowercase().contains(lq.as_str())
+            }
+        })
+        .collect();
+
+    out
+}
+
+pub fn search_iterly(cfg: &Config) -> Result<Vec<String>, io::Error> {
+    let cnt = fs::read_to_string(cfg.filename.as_str())?;
+
+    let res = do_search_iterly(cfg.query.as_str(), cnt.as_str(), cfg.case_sensitive);
+    let mut out = Vec::new();
+    for l in res {
+        out.push(String::from(l));
+    }
+
+    Ok(out)
+}
+
 pub fn start_search(cfg: &Config) -> Result<Vec<String>, io::Error> {
     let cnt = fs::read_to_string(cfg.filename.as_str())?;
 
