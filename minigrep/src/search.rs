@@ -1,3 +1,9 @@
+/*!
+实现了在文件filename中搜索query的功能,既可以精确搜索,也可以忽略大小写搜索
++ do_search使用了迭代器的in的方式
++ do_search_iterly使用了迭代器适配器和消费适配器的综合用法
+*/
+
 use std::fs;
 use std::io;
 
@@ -25,7 +31,26 @@ fn do_search<'a>(q: &str, cnt: &'a str, case_sensitive: bool) -> Vec<&'a str> {
     out
 }
 
-fn do_search_iterly<'a>(q: &str, cnt: &'a str, case_sensitive: bool) -> Vec<&'a str> {
+/**
+综合使用了迭代器的高级用法,迭代器适配器和消费适配器
+
+# Examples:
+```rust
+fn test_exactly_search() {
+    let cnt = "Hello, Good Morning!
+    Good morning!
+    How are you today?
+    I'm fine, thanks!";
+    let query = "morning";
+
+    assert_eq!(minigrep::search::do_search_iterly(query, cnt, true), vec!["Good morning!"]);
+}
+```
+# Panics
+# Errors
+# Safety
+*/
+pub fn do_search_iterly<'a>(q: &str, cnt: &'a str, case_sensitive: bool) -> Vec<&'a str> {
     let lq = q.to_ascii_lowercase();
 
     let out = cnt
