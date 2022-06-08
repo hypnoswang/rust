@@ -8,8 +8,8 @@ fn main() {
     println!("After increase: {:#?}", *a);
 
     {
-        let b = MyBox::new(20);
-        println!("Before drop: {}", *b);
+        let b = MyBox::new(120);
+        println!("Before drop B: {}", *b);
         drop(b);
         println!("After drop B");
     }

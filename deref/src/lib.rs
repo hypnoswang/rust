@@ -1,34 +1,47 @@
+use std::fmt::Display;
 use std::ops::Deref;
 use std::ops::DerefMut;
 use std::ops::Drop;
 
 #[derive(Debug, PartialEq)]
-pub struct MyBox<T> {
+pub struct MyBox<T: Display> {
     pub v: T,
 }
 
-impl<T> MyBox<T> {
+impl<T> MyBox<T>
+where
+    T: Display,
+{
     pub fn new(v: T) -> MyBox<T> {
         MyBox { v }
     }
 }
 
-impl<T> Deref for MyBox<T> {
+impl<T> Deref for MyBox<T>
+where
+    T: Display,
+{
     type Target = T;
     fn deref(&self) -> &Self::Target {
         &self.v
     }
 }
 
-impl<T> DerefMut for MyBox<T> {
+impl<T> DerefMut for MyBox<T>
+where
+    T: Display,
+{
     fn deref_mut(&mut self) -> &mut T {
         &mut self.v
     }
 }
 
-impl<T> Drop for MyBox<T> {
+impl<T> Drop for MyBox<T>
+where
+    T: Display,
+{
     fn drop(&mut self) {
-        println!("Drop MyBox with value");
+        println!("Drop MyBox with value {}", self.v);
     }
 }
 
