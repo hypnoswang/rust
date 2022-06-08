@@ -1,9 +1,10 @@
 use std::ops::Deref;
 use std::ops::DerefMut;
+use std::ops::Drop;
 
 #[derive(Debug, PartialEq)]
 pub struct MyBox<T> {
-    v: T,
+    pub v: T,
 }
 
 impl<T> MyBox<T> {
@@ -22,6 +23,12 @@ impl<T> Deref for MyBox<T> {
 impl<T> DerefMut for MyBox<T> {
     fn deref_mut(&mut self) -> &mut T {
         &mut self.v
+    }
+}
+
+impl<T> Drop for MyBox<T> {
+    fn drop(&mut self) {
+        println!("Drop MyBox with value");
     }
 }
 
