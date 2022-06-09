@@ -1,3 +1,4 @@
+use std::cell::RefCell;
 use std::rc::Rc;
 
 struct Person {
@@ -11,14 +12,17 @@ impl Person {
         }
     }
 
-    fn sing(&self, song: Rc<String>) {
-        println!("{} is singing: {}", self.name, song);
+    fn sing(&self, song: Rc<RefCell<String>>) {
+        let mut my_song = song.borrow_mut();
+        *my_song = format!("{}, {} finished!", my_song, self.name);
+
+        println!("{} is singing: {}", self.name, my_song);
 
         eprintln!("The reference count of song is {}", Rc::strong_count(&song));
     }
 }
 
-fn family_sing(song: Rc<String>) {
+fn family_sing(song: Rc<RefCell<String>>) {
     let families = vec![
         Person::new("Homer"),
         Person::new("Lisa"),
@@ -42,7 +46,7 @@ fn family_sing(song: Rc<String>) {
 }
 
 fn main() {
-    let song = Rc::new("I love you, Lily".to_string());
+    let song = Rc::new(RefCell::new("I love you, Lily".to_string()));
     eprintln!(
         "At beginning in main, the reference count of song is {}",
         Rc::strong_count(&song)
