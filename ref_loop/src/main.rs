@@ -32,6 +32,18 @@ impl Person {
     fn home(&mut self, f: Rc<RefCell<Family>>) {
         self.family = Rc::downgrade(&f);
     }
+
+    fn self_intro(&self) {
+        let c = self.company.upgrade().unwrap();
+        let f = self.family.upgrade().unwrap();
+
+        println!(
+            "Hi, I am {}, one of {}. I work for {}",
+            self.name,
+            f.borrow().get_host(),
+            c.borrow().get_name()
+        );
+    }
 }
 
 impl Worker for Person {
@@ -59,6 +71,10 @@ impl Company {
         }
     }
 
+    fn get_name(&self) -> &str {
+        &self.name
+    }
+
     fn employ(&mut self, p: Rc<RefCell<Person>>) {
         self.staff.push(p);
     }
@@ -82,6 +98,10 @@ impl Family {
             host: String::from(name),
             members: vec![],
         }
+    }
+
+    fn get_host(&self) -> &str {
+        &self.host
     }
 
     fn welcome(&mut self, p: Rc<RefCell<Person>>) {
@@ -116,4 +136,7 @@ fn main() {
 
     qax.borrow_mut().work();
     simpsons.borrow_mut().dinner();
+
+    homer.borrow().self_intro();
+    lisa.borrow().self_intro();
 }
