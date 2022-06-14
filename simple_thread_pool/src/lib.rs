@@ -7,12 +7,15 @@ pub trait Job {
     fn run(&mut self);
 }
 
-enum Cmd<T: Job + Send> {
+enum Cmd<T: Job + Send + 'static> {
     Exec(T),
     Stop,
 }
 
-struct Worker<T: Job + Send> {
+struct Worker<T>
+where
+    T: Job + Send + 'static,
+{
     idx: usize,
     handle: Option<JoinHandle<()>>,
     sender: Sender<Cmd<T>>,
@@ -81,7 +84,7 @@ where
     }
 }
 
-pub struct Pool<T: Job + Send> {
+pub struct Pool<T: Job + Send + 'static> {
     last_worker: usize,
     workers: Vec<Worker<T>>,
 }
