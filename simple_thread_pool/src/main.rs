@@ -1,5 +1,7 @@
 use simple_thread_pool::Job;
 use simple_thread_pool::Pool;
+use std::thread;
+use std::time::Duration;
 
 struct MyJob {}
 
@@ -22,6 +24,10 @@ fn run() {
             }
         }
     }
+
+    thread::sleep(Duration::from_secs(1));
+
+    pool.info();
 
     pool.stop();
 }
