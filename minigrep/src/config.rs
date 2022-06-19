@@ -22,7 +22,7 @@ impl Config {
             arg4 = args[3].as_str();
         }
 
-        let case_sensitive = Self::get_case_sensitive(arg4)?;
+        let case_sensitive = get_case_sensitive(arg4)?;
 
         Ok(Config {
             query: args[1].clone(),

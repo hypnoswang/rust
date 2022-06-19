@@ -22,12 +22,11 @@ impl Job for Digging {
 fn run() {
     let mut pool = Pool::new(10);
     for i in 0..100 {
-        let job: Box<dyn Job + Send + 'static>;
-        if i % 2 == 0 {
-            job = Box::new(Cleaning {});
+        let job: Box<dyn Job + Send + 'static> = if i % 2 == 0 {
+            Box::new(Cleaning {})
         } else {
-            job = Box::new(Digging {});
-        }
+            Box::new(Digging {})
+        };
 
         match pool.dispatch(job) {
             Ok(()) => {
