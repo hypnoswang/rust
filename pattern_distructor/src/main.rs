@@ -93,9 +93,16 @@ fn match_guard() {
         None => println!("Got nothing"),
     }
 
-    let y = 10;
+    let y = 8;
     match x {
         Some(n) if n == y => println!("Got x exactly equal to y: {}", n),
+        _ => println!("Got something we don't care"),
+    }
+
+    match y {
+        2 | 4 | 6 | 8 | 10 if y % 4 == 0 => {
+            println!("Got y {} less or enum to 10 and mod 4 is 0", y)
+        }
         _ => println!("Got something we don't care"),
     }
 
