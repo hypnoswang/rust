@@ -1,6 +1,9 @@
-use super::{Family, Person};
+extern crate family;
+
 use libc::{c_char, c_uint};
 use std::ffi::CStr;
+
+pub use family::{Family, Person};
 
 // 我们不能直接返回rust的结构体到C语言，因为Rust的结构体可能包含有rust特有的结构成员，比如String、HashMap
 // 我们只能返回一个结构体的指针
@@ -69,7 +72,7 @@ pub extern "C" fn add_person(f: *mut Family, p: *const Person) {
         rp = &*p;
     }
 
-    let np = Person::new(&rp.name, rp.age);
+    let np = Person::from(rp);
 
     rf.add_person(np);
 }

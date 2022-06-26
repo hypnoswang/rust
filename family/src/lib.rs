@@ -1,5 +1,3 @@
-pub mod ffi;
-
 pub struct Person {
     name: String,
     age: u32,
@@ -10,6 +8,13 @@ impl Person {
         Person {
             name: String::from(name),
             age,
+        }
+    }
+
+    pub fn from(p: &Self) -> Person {
+        Person {
+            name: p.name.clone(),
+            age: p.age,
         }
     }
 

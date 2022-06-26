@@ -6,11 +6,3 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-libc = "0.2.126"
-
-[build-dependencies]
-cbindgen = "0.24.3"
-
-[lib]
-name = "family"
-crate-type = ["staticlib"]
