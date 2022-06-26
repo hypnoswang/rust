@@ -1,9 +1,6 @@
-extern crate family;
-
+use family::{Family, Person};
 use libc::{c_char, c_uint};
 use std::ffi::CStr;
-
-pub use family::{Family, Person};
 
 // 我们不能直接返回rust的结构体到C语言，因为Rust的结构体可能包含有rust特有的结构成员，比如String、HashMap
 // 我们只能返回一个结构体的指针
