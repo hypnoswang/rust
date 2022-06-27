@@ -81,7 +81,6 @@ void free_home(Home* h) {
     }
 
     free(h);
-    free(h);
 }
 
 bool add_person(Home* h, Person* p) {
