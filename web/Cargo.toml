@@ -1,0 +1,12 @@
+[package]
+name = "web"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+closure_thread_pool = {path="../closure_thread_pool"}
+clap = "3.2.8"
+toml = "0.5.9"
+serde = { version = "1.0", features = ["derive"] }

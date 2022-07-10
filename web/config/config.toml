@@ -1,0 +1,13 @@
+name = "rust_web_server"
+addr = "127.0.0.1:8080"
+workers = 8
+
+[[routes]]
+method = "GET"
+uri = "/"
+rsp_file = "hello.html"
+
+[[routes]]
+method = "GET"
+uri = "/hello"
+rsp_file = "hello.html"

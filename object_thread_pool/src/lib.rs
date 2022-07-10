@@ -38,12 +38,12 @@ impl Worker {
                     break;
                 }
                 Cmd::Exec(mut job) => {
-                    let mut cnt = cc.lock().unwrap();
-                    *cnt += 1;
-
                     println!("thread-{} begin to work", idx);
                     job.run();
                     println!("thread-{} complete work", idx);
+
+                    let mut cnt = cc.lock().unwrap(); // 锁会一直持有到本分支结束
+                    *cnt += 1;
                 }
             }
         });
