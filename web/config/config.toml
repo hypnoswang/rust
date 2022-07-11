@@ -11,3 +11,8 @@ rsp_file = "hello.html"
 method = "GET"
 uri = "/hello"
 rsp_file = "hello.html"
+
+[[routes]]
+method = "GET"
+uri = "/christmas"
+rsp_file = "christmas.html"
