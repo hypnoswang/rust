@@ -2,7 +2,7 @@ use serde::Deserialize;
 use std::fs;
 use toml;
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug)]
 pub struct Config {
     pub name: String,
     pub addr: String,
@@ -11,7 +11,7 @@ pub struct Config {
     routes: Vec<Route>,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug)]
 struct Route {
     method: String,
     uri: String,

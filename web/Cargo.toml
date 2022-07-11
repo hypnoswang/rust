@@ -10,3 +10,4 @@ closure_thread_pool = {path="../closure_thread_pool"}
 clap = "3.2.8"
 toml = "0.5.9"
 serde = { version = "1.0", features = ["derive"] }
+signal-hook = "0.3.14"

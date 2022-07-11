@@ -1,11 +1,13 @@
 use closure_thread_pool::Pool;
 use config::Config;
+use signal_hook::{consts, flag};
 use std::fs;
 use std::io::prelude::*;
 use std::net::TcpListener;
 use std::net::TcpStream;
 use std::process;
 use std::str;
+use std::sync::{atomic::AtomicBool, atomic::Ordering, Arc};
 
 pub mod config;
 
@@ -17,26 +19,36 @@ pub fn run_server(cf: &str) {
 
     println!("the config is: {:#?}", cfg);
 
+    let cfg = Arc::new(cfg);
     let mut worker_cnt = 4;
     if cfg.workers > 0 && cfg.workers <= 10 {
         worker_cnt = cfg.workers;
     }
-
     let mut p = Pool::new(worker_cnt);
 
     let listener = TcpListener::bind(cfg.addr.as_str()).unwrap();
+
+    let exit = Arc::new(AtomicBool::new(false));
+    flag::register(consts::SIGTERM, Arc::clone(&exit)).unwrap();
+    flag::register(consts::SIGINT, Arc::clone(&exit)).unwrap();
+
     for stream in listener.incoming() {
+        if exit.load(Ordering::Relaxed) {
+            eprintln!("Received quit signal, system exiting...");
+            break;
+        }
+
         let stream = stream.unwrap();
 
-        let c = cfg.clone(); // 这里clone cfg是没有必要和有性能损失的，后续改进
+        let c = cfg.clone(); // 这里使用Arc来解决cfg的所有权问题
         p.dispatch(Box::new(move || {
-            handle_connection(stream, &c);
+            handle_connection(stream, c);
         }))
         .unwrap();
     }
 }
 
-fn handle_connection(mut stream: TcpStream, cfg: &Config) {
+fn handle_connection(mut stream: TcpStream, cfg: Arc<Config>) {
     let mut buffer = [0; 1024];
     stream.read(&mut buffer).unwrap();
 
